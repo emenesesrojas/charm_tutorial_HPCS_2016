@@ -1,0 +1,16 @@
+Large supercomputers present several challenges in effectively programming parallel applications: exposing concurrency, optimizing data movement, controlling load imbalance, addressing heterogeneity, handling variations in application's behavior, and tolerating system failures.
+Addressing these challenges requires an emphasis on important
+concepts during application development: overdecomposition, asynchrony, migratability,
+and adaptivity. To realize all those features, the runtime systems will need to become
+introspective and provide automated support for several tasks that currently burden the programmer.
+This tutorial is aimed at exposing the attendees to the aforementioned concepts. We
+will present details on how a concrete implementation of these concepts, in synergy
+with an introspective runtime system, can lead to development of applications that scale
+irrespective of the rough landscape. We will focus on Charm++ as the
+programming paradigm that encapsulates these ideas.
+Charm++ provides an asynchronous, message-driven programming model via parallel
+objects and an adaptive runtime system that guides execution. It automatically overlaps communication and computation,
+balances loads, tolerates failures, checkpoints for split-execution, and
+promotes modularity while allowing programming in C++. Several widely used
+Charm++ applications thrive in computational science domains including biomolecular
+modeling, cosmology, quantum chemistry, epidemiology, and  stochastic optimization. The approach followed in this tutorial is to provide a guide for migrating applications from the reigning parallel programming paradigm (MPI) to Charm++.

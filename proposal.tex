@@ -1,0 +1,226 @@
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{fullpage}
+\usepackage{pdfpages}
+\usepackage{enumitem}
+
+\title{Programming with Parallel Objects: From MPI to Charm++}
+\author{Esteban Meneses \and Celso L. Mendes \and La\'{e}rcio Lima Pilla}
+
+\date{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+
+\section{Description}
+
+\subsection{Tutorial Goals}
+
+This tutorial\footnote{We acknowledge the contribution of the following people to this tutorial proposal: Prof. Laxmikant V. Kal\'{e},  Nikhil Jain, and Michael Robson from the University of Illinois at Urbana-Champaign.} aims at exposing the attendees to concepts that are
+becoming critical as dynamic complex applications prepare for
+multi-petaflop systems: overdecomposition, asynchrony, migratability,
+and adaptivity. At the same time, we make an attempt to familiarize the attendees
+with the mechanics and advantages of a powerful runtime system (RTS) that can relieve the
+programmer from several low level tasks such as load balancing. In this tutorial,
+we focus on Charm++, a mature parallel programming system that has championed
+these concepts and is home to many real world applications that scale to hundreds of
+thousands of processors. Charm++ is being actively explored by researchers
+from various groups (e.g. SNL, LANL, LLNL, LBNL, Disney Research) in their quest to
+fight the dynamic supercomputing environments at scale. The approach followed in this tutorial consists in providing a migration guide from the {\em de facto} standard in parallel programming, Message Passing Interface (MPI), to Charm++.
+
+After the tutorial, attendees will be:
+\begin{itemize}
+\item familiar with the keys ideas of overdecomposition, asynchrony, migratability, and adaptivity.
+\item knowledgeable about the state of the art techniques and their utility in adaptive RTS.
+\item able to express their problems as interacting overdecomposed objects, e.g.
+parallel objects in Charm++.
+\item able to understand and address the performance characteristics of their Charm++
+applications, using both simple manual instrumentation and the Projections
+performance visualization and analysis tool.
+\item capable of identifying the features that Charm++ provides to improve parallel programming
+productivity, and determine which are applicable to their applications and avoid scalability bottlenecks.
+\item able to migrate MPI applications to Charm++ using two different mechanisms.
+\end{itemize}
+
+\subsection{Relevance to HPCS attendees}
+
+In the coming years, the HPC community is targeting multi-petaflop and exaflop
+systems, which execute complex applications with dynamic variations and load imbalances.
+In such scenarios, the traditional ways of programming parallel applications will have to
+make way for different methodologies that are based on ideas of adaptivity and runtime
+systems.  Charm++ embodies a number of such concepts and adaptive features, familiarity
+with whom will go a long way in effectively using increasingly numerous and heterogeneous
+processors for the next-generation of applications. These codes will support sophisticated techniques, such as
+multi-physics and adaptive refinement. These features provide
+application-agnostic mechanisms to address common needs such as flexible
+decomposition, load balance, and fault tolerance, while making it
+straightforward to introduce application-specific optimizations in those
+domains. Those optimizations are carefully kept independent of both runtime
+system and application logic.
+
+In addition, Charm++ provides a mature foundation for
+several highly scalable and widely used applications in science and
+engineering. Charm++ runs on multicore desktops with shared memory, clusters of
+all sizes, IBM and Cray supercomputers, and efficiently supports accelerators
+where available. Its most widely-used application, the biomolecular simulation
+program NAMD, accounts for a large fraction of NSF supercomputer usage and won
+the 2002 Gordon Bell prize. Charm++ also won a performance award in the
+2011 HPC Challenge.
+
+Finally, the set of features that Charm++ offers provide application developers
+assurance that they can write parallel code and test it on small systems, and
+expect it to smoothly scale to the most powerful machines available without the
+technological discontinuities of other approaches. This ease of development and
+scaling closely aligns with the goals of HPCS to promote broader
+and more effective use of high performance computing.
+
+\subsection{Tutorial Contents}
+
+The tutorial is divided into two parts. The tutorial starts with an introduction to the principles, patterns,
+and high-level techniques of parallel-objects programming and its overdecomposition
+based asynchronous, message-driven execution model. Attendees will see various
+ways in which computational applications map onto structured and unstructured collections of
+parallel objects. They will learn how virtualization and overdecomposition
+enable a wide range of features and optimizations that are not available in a
+traditional SPMD environment. We will illustrate these points with a collection
+of case studies from real applications.
+
+Next, we will describe the mechanics of writing and running Charm++
+programs. We will cover the syntax and API calls for interface definition,
+communication, and control flow that Charm++ adds beyond standard C++
+code. Attendees will see how to compile Charm++ code in various configurations
+relevant to workstations, clusters, and supercomputers. We will explain how to
+enable the advanced runtime features that depend on migratability through the
+construction of object serialization routines. That completes the first part.
+
+To facilitate the understanding of these concepts, we will provide a guide on how to migrate MPI parallel applications to Charm++. The advanced Charm++ features will be introduced along with the code samples. The second part of the tutorial concentrates on the migration strategy, split into two approaches. The first approach is what we call the {\em fast} way to have a Charm++ code. It consists in using Adaptive Message Passing Interface (AMPI), an extension to Charm++ that allows MPI codes to run on the Charm++ RTS with minimal modifications. The second approach is what we call the {\em flexible} way. It consists in removing all MPI operations and redesigning the code to fully leverage the benefits of Charm++ RTS.
+
+\newpage
+\section{Outline}
+\noindent {\bf Total Duration}: 120 minutes\\
+
+\noindent{\bf Part I: Introduction to Parallel Objects}\\
+\noindent Duration: 30 minutes
+\begin{enumerate}
+\item Object design: decomposition in terms of the algorithm and the logical entities of the problem
+\item Execution model: asynchronous method invocation, message-driven execution
+\item Charm++
+\begin{enumerate}
+\item Object-level programming
+\item {\em Hello World} example
+\item Benefits of Charm++: automatic overlap of communication and computation, modularity, automatic and adaptive resource management
+\item Charm++ programming: object and interface definition, construction, messaging, collectives
+\item Compilation and execution: compiler wrapper and process launching
+\end{enumerate}
+\end{enumerate}
+
+\noindent{\bf Part II: Migrating Parallel Applications from MPI to Charm++}
+%\noindent Duration: 90 minutes
+\begin{enumerate}
+\item The Fast Way: Adaptive Message Passing Interface\\
+\noindent Duration: 45 minutes
+\begin{enumerate}
+\item Introduction to AMPI
+\item Transforming applications from MPI to AMPI
+\item Removing global variables: manual vs automatic
+\item Example of code migration
+\item Overdecomposition
+\item Dynamic load balancing
+\begin{enumerate}
+\item Migrating ranks: PUP methods vs {\tt isomalloc}
+\item Inserting load balancing calls
+\item Strategy selection: comprehensive vs refinement, communication-aware, application-specific
+\end{enumerate}
+\item Performance tuning and visualization: using Projections tool
+\end{enumerate}
+\item The Flexible Way: Full Migration to Charm++\\
+\noindent Duration: 45 minutes
+\begin{enumerate}
+\item Application Design: case studies from applications like NAMD, ChaNGa, and OpenAtom
+\item Advanced Charm++
+\begin{enumerate}
+\item Chare Groups and Nodegroups: sharing data between objects on the same processor/node
+\item Messages: avoiding copying costs
+\item Control flow with Structured Dagger (SDAG)
+\item Checkpointing
+\end{enumerate}
+\item Migrating MPI constructs
+\begin{enumerate}
+\item Startup and single operations
+\item Communication operations
+\item Other concerns
+\end{enumerate}
+\item Example of code migration
+\end{enumerate}
+
+\end{enumerate}
+
+\section{Audience}
+
+This tutorial will benefit three broad classes of attendees:
+\vspace{-0.25cm}
+\begin{enumerate}[leftmargin=*,noitemsep,label=\alph*)]
+\item {\em Experienced application developers} who would like to reassess the
+  challenges of scaling their codes to future and current large-scale machines,
+  the approaches taken, and the software framework they use.
+\item {\em Numerical and computational scientists} who would like to develop new
+  applications with complex structures and dynamic behaviors, as well as those
+  who would like to examine the performance characteristics of their existing
+  applications in light of the tools and techniques presented in the tutorial.
+\item {\em Educators} who are developing instruction curricula for parallel
+  programming, and would like to cover a range of practical systems used in the
+  field.
+\end{enumerate}
+\vspace{-0.25cm}
+We expect that the audience feel comfortable with programming in C++ and
+have some background knowledge of parallel computing, in particular MPI. The presented material will have a broad appeal -- we anticipate that 50\% of
+the material will be beginner-level, 30\% intermediate-level, and 20\% intended
+for parallel programming experts. The intermediate level content will follow
+directly from the basic content that we will present. The advanced content will
+be structured so that less experienced attendees will understand its
+motivations and recognize its relevance should a need arise in practice.
+%, so that they can revisit the appropriate tutorial material after they have gained more experience.
+
+\section{Supporting Material}
+The tutorial will be based on a slide set with all the contents. The slides will be made public for the attendees to have a reference to the material. In addition, we will provide a repository with basic Charm++ applications and applications that have been migrated from MPI to Charm++ using any of the two methods described in the tutorial.
+
+\section{Presenters}
+
+\noindent{\bf Name}: Esteban Meneses, PhD (esteban.meneses@acm.org)\\
+\noindent{\bf Affiliation}: Computing Research Center, Costa Rica Institute of Technology, Costa Rica.\\
+\noindent{\bf Biography}: Esteban is an assistant professor at the Costa Rica Institute of Technology. His research interests include fault tolerance and load balancing for large-scale systems. He works on energy-efficient low-overhead techniques for fault tolerance. He has developed message-logging protocols that exploit application characteristics to reduce the total memory footprint of the message log. He holds a Ph.D. in Computer Science from the University of Illinois at Urbana-Champaign.
+He received a bachelor's and master's degree in Computer Science from the Costa
+Rica Institute of Technology. \\
+
+\noindent{\bf Name}: Celso L. Mendes, PhD (cmendes@illinois.edu)\\
+\noindent{\bf Affiliation}: National Center for Supercomputing Applications, United States of America.\\
+\noindent{\bf Biography}: Celso is currently a senior staff member of the National
+Center for Supercomputing Applications at Illinois, where he has been
+participating in the Blue Waters deployment project. 
+He has worked on performance analysis tools, techniques for parallel systems, and applications of adaptive runtime systems
+for large parallel machines.
+He received a Ph.D. in Computer Science from the University of Illinois
+at Urbana-Champaign and received both an Engineer and a Master of Engineering
+degrees from the Aeronautics Technology Institute (ITA), in Brazil.\\
+
+\noindent{\bf Name}: La\'{e}rcio Lima Pilla, PhD (laercio.pilla@inf.ufrgs.br)\\
+\noindent{\bf Affiliation}: Department of Informatics and Statistics, Federal University of Santa Catarina, Brazil.\\
+\noindent{\bf Biography}: La\'{e}rcio holds an associate professor position in the Federal University of Santa Catarina,Brazil. He obtained his Ph.D. degree in Computer Science in 2014 in a joint doctorate
+between the Federal University of Rio Grande do Sul, Brazil, and the University of Grenoble, France. His research interests focus on topology-aware scheduling and software-based fault-tolerance on GPUs.\\
+
+\section{Previous Versions}
+A different version of this tutorial was offered at the International Symposium on Computer Architecture and High Performance Computing (SBAC-PAD) in 2015. On that occasion, the tutorial was compressed to 2 hours and did not explore the different mechanisms Charm++ has to deal with asynchrony. 
+
+
+
+
+
+
+
+
+%\includepdf[pages={-}]{kale.pdf}
+
+\end{document}
